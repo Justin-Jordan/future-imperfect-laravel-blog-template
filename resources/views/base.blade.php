@@ -34,7 +34,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a @class(['nav-link', 'active' => str_starts_with('blog.')]) href="{{ route('blog.index') }}">Blog</a>
+                        <a @class(['nav-link', 'active' => str_starts_with($routeName, 'blog.')]) href="{{ route('blog.index') }}">Blog</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">links</a>
