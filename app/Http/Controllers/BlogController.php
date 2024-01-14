@@ -17,8 +17,7 @@ class BlogController extends Controller
         ]);
     }
 
-    public function show (string $slug, string $id) : RedirectResponse | View {
-        $post = Post::findOrfail($id);
+    public function show (string $slug, Post $post) : RedirectResponse | View {
         if ($post->slug != $slug) {
             return to_route("blog.show", [ "slug" => $post->slug, "id" => $post->id ]);
         }
