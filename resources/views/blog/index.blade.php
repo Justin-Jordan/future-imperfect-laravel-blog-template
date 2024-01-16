@@ -22,6 +22,9 @@
                     @endforeach
                 @endif
             </p>
+            @if ($post->image)
+                <img style="width: 100%; heigth:150; object-fit:cover;" src="{{ $post->imageUrl() }}" alt="{{ $post->title }}">
+            @endif
             <p>{{ $post->content }}</p>
             <p>
                 <a href="{{ route('blog.show', ['slug' => $post->slug, 'post' => $post->id]) }}" class="btn btn-primary">Lire

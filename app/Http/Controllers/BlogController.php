@@ -8,9 +8,12 @@ use App\Models\Post;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -19,7 +22,7 @@ class BlogController extends Controller
     public function index(): View
     {
         return view("blog.index", [
-            'posts' => Post::with('tags','category')->paginate(5)
+            'posts' => Post::with('tags', 'category')->paginate(5)
         ]);
     }
 
@@ -46,7 +49,7 @@ class BlogController extends Controller
 
     public function store(FormPostRequest $request)
     {
-        $post = Post::create($request->validated());
+        $post = Post::create($this->extractData(new Post(), $request));
         $post->tags()->sync($request->validated('tags'));
 
         return redirect()
@@ -66,11 +69,26 @@ class BlogController extends Controller
     public function update(Post $post, FormPostRequest $request)
     {
 
-        $post->update($request->validated());
+        $post->update($this->extractData($post, $request));
         $post->tags()->sync($request->validated('tags'));
 
         return redirect()
             ->route('blog.show', ['slug' => $post->slug, 'post' => $post->id])
             ->with('success', "L'article a bien été modifié!");
+    }
+
+    private function extractData(Post $post, FormRequest $request): array
+    {
+        $data = $request->validated();
+        /**@var UploadedFile|null $image */
+        $image = $request->validated('image');
+        if ($image == null || $image->getError()) {
+            return $data;
+        }
+        if ($post->image) {
+            Storage::disk('public')->delete($post->image);
+        }
+        $data["image"] = $image->store('blog', 'public');
+        return $data;
     }
 }
