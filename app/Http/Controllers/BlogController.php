@@ -23,7 +23,8 @@ class BlogController extends Controller
     {
         return view("blog.index", [
             'posts' => Post::with('tags', 'category')->paginate(3),
-            'latestPosts' => Post::orderBy('post_id', 'desc')->limit(3)->get(),
+            'latestPosts' => Post::orderBy('post_id', 'desc')->limit(3
+            )->get(),
         ]);
     }
 
