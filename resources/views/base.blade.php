@@ -1,77 +1,120 @@
-<!DOCTYPE html>
-<html lang="fr">
+<!DOCTYPE HTML>
+<!--
+ Future Imperfect by HTML5 UP
+ html5up.net | @ajlkn
+ Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-
-    <style>
-        @layer demo {
-            button {
-                all: unset;
-            }
-        }
-    </style>
     <title>@yield('title')</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    @vite(['resources/css/app.css', 'resources/css/fontawesome-all.min.css'])
 </head>
 
-<body>
+<body class="is-preload">
 
-    @php
-        $routeName = request()
-            ->route()
-            ->getName();
-    @endphp
+    <!-- Wrapper -->
+    <div id="wrapper">
 
-    <nav class="navbar navbar-expand-lg bg-primary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">Accueil</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a @class(['nav-link', 'active' => str_starts_with($routeName, 'blog.')]) href="{{ route('blog.index') }}">Blog</a>
+        <!-- Header -->
+        <header id="header">
+            <h1><a href="/">Future Imperfect</a></h1>
+            <nav class="links">
+                <ul>
+                    <li><a href="{{ route('blog.index') }}">Blog</a></li>
+                    <li><a href="#">General</a></li>
+                    <li><a href="#">Futur</a></li>
+                    <li><a href="#">Robot</a></li>
+                    <li><a href="#">IA</a></li>
+                </ul>
+            </nav>
+            <nav class="main">
+                <ul>
+                    <li class="search">
+                        <a class="fa-search" href="#search">Search</a>
+                        <form id="search" method="get" action="#">
+                            <input type="text" name="query" placeholder="Search" />
+                        </form>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">links</a>
+                    <li class="menu">
+                        <a class="fa-bars" href="#menu">Menu</a>
                     </li>
                 </ul>
-                <div class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    @auth
-                        {{ Auth::user()->name }}
-                        <form class="nav-item" action="{{ route('auth.logout') }}" method="post">
-                            @method('delete')
-                            @csrf
-                            <button class="nav-link">Se déconnecter</button>
-                        </form>
-                    @endauth
-                    @guest
-                        <div class="nav-item">
-                            <a class="nav-link" href="{{ route('auth.login') }}">Se connecter</a>
-                        </div>
-                    @endguest
+            </nav>
+        </header>
+
+        <!-- Menu -->
+        <section id="menu">
+
+            <!-- Search -->
+            <section>
+                <form class="search" method="get" action="#">
+                    <input type="text" name="query" placeholder="Search" />
+                </form>
+            </section>
+
+            <!-- Links -->
+            <section>
+                <ul class="links">
+                    <li>
+                        <a href="#">
+                            <h3>Lorem ipsum</h3>
+                            <p>Feugiat tempus veroeros dolor</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <h3>Dolor sit amet</h3>
+                            <p>Sed vitae justo condimentum</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <h3>Feugiat veroeros</h3>
+                            <p>Phasellus sed ultricies mi congue</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <h3>Etiam sed consequat</h3>
+                            <p>Porta lectus amet ultricies</p>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Actions -->
+            <section>
+                <ul class="actions stacked">
+                    <li><a href="#" class="button large fit">Log In</a></li>
+                </ul>
+            </section>
+
+        </section>
+
+        <!-- Main -->
+        <div id="main">
+
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
                 </div>
-            </div>
+            @endif
+            @yield('content')
+
+
         </div>
-    </nav>
-    <div class="container">
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-        @yield('content')
+
+        @yield('sidebar')
+        
+        @yield('footer')
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
-    </script>
+    @vite(['resources/js/jquery.min.js', 'resources/js/browser.min.js', 'resources/js/breakpoints.min.js', 'resources/js/util.js', 'resources/js/main.js'])
+
+
 </body>
 
 </html>
